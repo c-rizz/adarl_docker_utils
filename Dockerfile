@@ -110,7 +110,8 @@ RUN git clone  --branch crzz-dev https://gitlab-docker-deploy-token:Usm5fNeN7XoD
 RUN git clone  --branch crzz-dev https://gitlab-docker-deploy-token:u_zz_gry5BCgS1sakF2Q@gitlab.idiap.ch/learn-real/lr_panda_moveit_config.git ${TMP_CATKIN_WS}/src/lr_panda_moveit_config
 RUN git clone  --branch crzz-dev https://gitlab-docker-deploy-token:PpsDwupbSkZyPxXFC2x7@gitlab.idiap.ch/learn-real/realsense.git ${TMP_CATKIN_WS}/src/lr_realsense
 #RUN source /opt/ros/noetic/setup.bash
-RUN rosdep install --from-paths src --ignore-src -r -y
+RUN apt-get update && rosdep update && rosdep install --from-paths src --ignore-src -r -y \
+    && rm -rf /var/lib/apt/lists/*
 RUN rm -rf $TMP_CATKIN_WS
 # ----------------------------------------------------------------------
 
