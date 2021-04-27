@@ -101,18 +101,21 @@ RUN apt-get update && add-apt-repository -y ppa:deadsnakes/ppa
 RUN apt-get update && sudo apt-get install -y --no-install-recommends \ 
     python3.7 python3.7-venv python3.7-dev xvfb xserver-xephyr tigervnc-standalone-server xfonts-base \
     && rm -rf /var/lib/apt/lists/*
+COPY get_lr_gym.sh /home/appuser/get_lr_gym.sh
 
 ENV TMP_CATKIN_WS /tmp/lr_catkin_ws
 RUN mkdir -p ${TMP_CATKIN_WS}/src
 WORKDIR $TMP_CATKIN_WS
-RUN git clone  --branch master https://gitlab-docker-deploy-token:Bp6Kfk-8GUyKwypvimhV@gitlab.idiap.ch/learn-real/lr_gym.git ${TMP_CATKIN_WS}/src/lr_gym
-RUN git clone  --branch crzz-dev https://gitlab-docker-deploy-token:Usm5fNeN7XoDXoUhtuuE@gitlab.idiap.ch/learn-real/panda.git ${TMP_CATKIN_WS}/src/lr_panda
-RUN git clone  --branch crzz-dev https://gitlab-docker-deploy-token:u_zz_gry5BCgS1sakF2Q@gitlab.idiap.ch/learn-real/lr_panda_moveit_config.git ${TMP_CATKIN_WS}/src/lr_panda_moveit_config
-RUN git clone  --branch crzz-dev https://gitlab-docker-deploy-token:PpsDwupbSkZyPxXFC2x7@gitlab.idiap.ch/learn-real/realsense.git ${TMP_CATKIN_WS}/src/lr_realsense
+RUN /home/appuser/get_lr_gym.sh $TMP_CATKIN_WS
 #RUN source /opt/ros/noetic/setup.bash
 RUN apt-get update && rosdep update && rosdep install --from-paths src --ignore-src -r -y \
     && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /home/appuser
 RUN rm -rf $TMP_CATKIN_WS
+RUN echo 'export PS1="\[\033[38;5;34m\]\u@\h\[$(tput sgr0)\]\[\033[38;5;76m\]:\[$(tput sgr0)\]\[\033[38;5;172m\]\w\[$(tput sgr0)\]\[\033[38;5;158m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"' >> /root/.bashrc
+RUN echo source /opt/ros/noetic/setup.bash >> /root/.bashrc
+
 # ----------------------------------------------------------------------
 
 
