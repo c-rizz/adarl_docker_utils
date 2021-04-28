@@ -1,28 +1,37 @@
 #!/bin/bash
-XAUTH=/tmp/.docker.xauth
+XAUTH=/tmp/.lr-gym-docker.xauth
 
-echo "Preparing Xauthority data..."
-xauth_list=$(xauth nlist :0 | tail -n 1 | sed -e 's/^..../ffff/')
-if [ ! -f $XAUTH ]; then
-    if [ ! -z "$xauth_list" ]; then
-        echo $xauth_list | xauth -f $XAUTH nmerge -
-    else
-        touch $XAUTH
-    fi
-    chmod a+r $XAUTH
+if [ -z ${DISPLAY+x} ]; then
+    echo '$DISPLAY is not set, please set it to the correct X11 display. (Probably it is ":0" or ":1")'
+    exit 1
 fi
 
-echo "Done."
-echo ""
-echo "Verifying file contents:"
-file $XAUTH
-echo "--> It should say \"X11 Xauthority data\"."
-echo ""
-echo "Permissions:"
-ls -FAlh $XAUTH
-echo ""
+#echo "Preparing Xauthority data..."
+xauth_list=$(xauth nlist $DISPLAY | tail -n 1 | sed -e 's/^..../ffff/')
+if [ ! -z "$xauth_list" ]; then
+    echo $xauth_list | xauth -f $XAUTH nmerge -
+else
+    touch $XAUTH
+fi
+chmod a+r $XAUTH
 
-docker create --gpus all -it  --shm-size=8gb --privileged \
+
+#echo "Done."
+#echo ""
+#echo "Verifying file contents:"
+#file $XAUTH
+#echo "--> It should say \"X11 Xauthority data\"."
+#echo ""
+#echo "Permissions:"
+#ls -FAlh $XAUTH
+#echo ""
+
+
+container_name=lr-gym-x11-pass
+docker container inspect $container_name > /dev/null 2>&1
+
+if [ $? -ne 0 ]; then
+    docker create --gpus all -it  --shm-size=8gb --privileged \
          --env=NVIDIA_DRIVER_CAPABILITIES=all \
          --env="DISPLAY=$DISPLAY" \
          --env="QT_X11_NO_MITSHM=1"  \
@@ -31,8 +40,10 @@ docker create --gpus all -it  --shm-size=8gb --privileged \
          --volume="$XAUTH:$XAUTH" \
          --net=host \
          --mount type=bind,source="$HOME",target=/home/host \
-         --name lr-gym-x11-pass \
+         --name $container_name \
          lr-gym:cuda11.1.1-noetic-desktop-full \
          /bin/bash
+fi
 
-docker start -i lr-gym-x11-pass
+xhost +local: 
+docker start -i $container_name
