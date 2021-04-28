@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build --build-arg USER_ID=$UID --tag nvidia-ros:cuda11.1.1-noetic-desktop-full .
+docker build --build-arg USER_ID=$UID --tag lr-gym:cuda11.1.1-noetic-desktop-full .
