@@ -14,7 +14,43 @@ RUN apt-get update && apt-get install -y \
     # python-vcstools \
 # RUN ln -sv /usr/bin/python3 /usr/bin/python
 
-# Install ROS.
+
+# ----------------------------------------------------------------------
+# System setup
+# ----------------------------------------------------------------------
+
+# setup environment
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+# create a non-root user
+ARG USER_ID=1000
+RUN useradd -m --no-log-init --system  --uid ${USER_ID} appuser -g sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER appuser
+WORKDIR /home/appuser
+
+ENV PATH="/home/appuser/.local/bin:${PATH}"
+RUN wget https://bootstrap.pypa.io/get-pip.py && \
+	python3 get-pip.py --user && \
+	rm get-pip.py
+
+#Byobu Fix for launching BASH instead of SH
+RUN mkdir -p /home/appuser/.byobu/
+RUN echo 'set -g default-shell /bin/bash' >>/home/appuser/.byobu/.tmux.conf
+RUN echo 'set -g default-command /bin/bash' >>/home/appuser/.byobu/.tmux.conf
+
+# ----------------------------------------------------------------------
+
+
+
+
+# ----------------------------------------------------------------------
+# Install ROS
+# ----------------------------------------------------------------------
+
+USER root
+
 # setup timezone
 # RUN echo 'Etc/UTC' > /etc/timezone && \
 #     ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
@@ -28,15 +64,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C1CF6E31E6
 # setup sources.list
 RUN echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros1-latest.list
 
-# setup environment
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-
 ENV ROS_DISTRO noetic
-
-# ----------------------------------------------------------------------
-# Install ROS
-# ----------------------------------------------------------------------
 
 # install ros packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -66,33 +94,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-desktop-full \
     && rm -rf /var/lib/apt/lists/*
 
-
-# End Ros Install
 # ----------------------------------------------------------------------
 
 
-# create a non-root user
-ARG USER_ID=1000
-RUN useradd -m --no-log-init --system  --uid ${USER_ID} appuser -g sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER appuser
-WORKDIR /home/appuser
-
-ENV PATH="/home/appuser/.local/bin:${PATH}"
-RUN wget https://bootstrap.pypa.io/get-pip.py && \
-	python3 get-pip.py --user && \
-	rm get-pip.py
-
-#Byobu Fix for launching SH instead of BASH
-RUN mkdir -p /home/appuser/.byobu/
-RUN echo 'set -g default-shell /bin/bash' >>/home/appuser/.byobu/.tmux.conf
-RUN echo 'set -g default-command /bin/bash' >>/home/appuser/.byobu/.tmux.conf
 
 
 
 # ----------------------------------------------------------------------
 # Install requirements for lr_gym
 # ----------------------------------------------------------------------
+
 #Satisfy all lr_gym dependencies
 
 USER root
