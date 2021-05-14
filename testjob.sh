@@ -7,5 +7,5 @@
 
 cd $WORKDIR
 module load cuda/11.1                          # Load the module my_module_name to set up the environment
-singularity exec lr-gym.img ./test_script
+singularity exec lr-gym.img ./testscript.sh
 

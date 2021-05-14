@@ -1,3 +1,3 @@
 #!/bin/bash
 
-singularity shell --nv lr_gym.sif
+singularity run --nv ./build/lr_gym_sandbox
