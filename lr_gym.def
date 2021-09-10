@@ -2,7 +2,8 @@ Bootstrap: docker-daemon
 From: lr-gym:cuda11.1.1-noetic-desktop-full
 
 %post
-
+    apt-get update && apt-get install -y xorg kbd
+    echo 'allowed_users = anybody' > /etc/X11/Xwrapper.config
 %environment
 
 %runscript

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-singularity run --nv ./build/lr_gym_sandbox
+singularity run --nv --writable ./build/lr_gym_sandbox
