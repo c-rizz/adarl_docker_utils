@@ -3,8 +3,10 @@
 # Docker
 
 You can build the docker image using the build_docker.sh script.
-Once you have can launch the container with launch.sh
-If you need rendering you may want to pass through access your host X11 server, you can do so by using launch_x11_pass.sh
+
+Once you have done that you can launch the container with launch.sh.
+
+If you need rendering you may want to pass through access your host X11 server, you can do so by using launch_x11_pass.sh.
 
 # Singularity
 
