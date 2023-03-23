@@ -28,10 +28,11 @@ chmod a+r $XAUTH
 
 
 container_name=lr-gym-ros2-x11-pass
-docker container inspect $container_name > /dev/null 2>&1
+sudo docker container inspect $container_name > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
-    docker create --gpus all -it  --shm-size=8gb --privileged \
+    echo "Creating new container..."
+    sudo docker create --gpus all -it  --shm-size=8gb --privileged \
          --env=NVIDIA_DRIVER_CAPABILITIES=all \
          --env="DISPLAY=$DISPLAY" \
          --env="QT_X11_NO_MITSHM=1"  \
@@ -46,4 +47,5 @@ if [ $? -ne 0 ]; then
 fi
 
 xhost +local: 
-docker start -i $container_name
+echo "Starting container"
+sudo docker start -i $container_name

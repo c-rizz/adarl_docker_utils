@@ -35,6 +35,7 @@ ENV PATH $PATH:/root/.local/bin
 RUN mkdir -p /root/.byobu/
 RUN echo 'set -g default-shell /bin/bash' >>/root/.byobu/.tmux.conf
 RUN echo 'set -g default-command /bin/bash' >>/root/.byobu/.tmux.conf
+echo "export ROS_LOCALHOST_ONLY=1" >> ~/.bashrc
 
 # create a non-root user
 ARG USER_ID=1000
@@ -45,6 +46,20 @@ USER ${USER_NAME}
 WORKDIR /home/${USER_NAME}
 
 ENV PATH="/home/${USER_NAME}/.local/bin:${PATH}"
+
+# Install stuff for interactive use
+
+# Make byobu use bash
+RUN mkdir -p /home/${USER_NAME}/.byobu/
+RUN echo 'set -g default-shell /bin/bash' >>/home/${USER_NAME}/.byobu/.tmux.conf
+RUN echo 'set -g default-command /bin/bash' >>/home/${USER_NAME}/.byobu/.tmux.conf
+RUN echo "export ROS_LOCALHOST_ONLY=1" >> ~/.bashrc
+# Fix bash autocompletion
+USER root
+RUN apt-get update && apt-get install -y bash-completion 
+# Fix apt autocompletion
+RUN rm /etc/apt/apt.conf.d/docker-clean 
+
 # ----------------------------------------------------------------------
 
 
