@@ -2,10 +2,10 @@ Bootstrap: docker
 From: nvidia/cuda:12.2.0-devel-ubuntu20.04 
 
 %post
-    apt-get update && apt-get install -y python3-dev ca-certificates git wget sudo vim iputils-ping ssh build-essentials byobu apt-utils curl
+    apt-get update && apt-get install -y python3-dev ca-certificates git wget vim build-essential byobu curl
 
     curl -O https://bootstrap.pypa.io/get-pip.py && \
-    python get-pip.py && \
+    python3 get-pip.py && \
     rm get-pip.py
 
 %environment
