@@ -1,8 +1,15 @@
 Bootstrap: docker
-From: nvidia/cuda:12.2.0-devel-ubuntu20.04 
+From: nvidia/cudagl:11.4.2-devel-ubuntu20.04 
 
 %post
-    apt-get update && apt-get install -y python3-dev ca-certificates git wget vim build-essential byobu curl
+    ln -fs /usr/share/zoneinfo/Europe/Rome /etc/localtime 
+    apt update
+    DEBIAN_FRONTEND=noninteractive apt install -y python3-dev ca-certificates git \
+        wget vim build-essential byobu curl python3-venv \
+        libglib2.0-0 libsm6 libxrender1 libxext6 \
+        libglfw3 libgl1-mesa-glx libosmesa6 libglew-dev \
+        && rm -rf /var/lib/apt/lists/*
+
 
     curl -O https://bootstrap.pypa.io/get-pip.py && \
     python3 get-pip.py && \
