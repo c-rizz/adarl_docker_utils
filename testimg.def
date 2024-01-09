@@ -1,13 +1,12 @@
 Bootstrap: docker
-From: nvidia/cudagl:11.4.2-devel-ubuntu20.04 
+From: nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
 
 %post
-    ln -fs /usr/share/zoneinfo/Europe/Rome /etc/localtime 
+    ln -fs /usr/share/zoneinfo/Europe/Rome /etc/localtime
     apt update
     DEBIAN_FRONTEND=noninteractive apt install -y python3-dev ca-certificates git \
-        wget vim build-essential byobu curl python3-venv strace \
+        wget vim build-essential byobu curl python3-venv \
         mesa-utils-extra iputils-ping \
-        ffmpeg \
         && rm -rf /var/lib/apt/lists/*
 
 
