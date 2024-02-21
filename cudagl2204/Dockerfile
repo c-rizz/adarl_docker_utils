@@ -1,15 +1,18 @@
-FROM ubuntu:22.04
+FROM cudagl:12.3.1-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y \
-	ca-certificates python3 python3-venv git wget sudo vim iputils-ping ssh \
+	ca-certificates python3 python3-venv python-is-python3 \
+        git wget sudo vim iputils-ping ssh \
 	dirmngr gnupg2 \
 	build-essential \
 	byobu \
 	apt-utils \
 	software-properties-common \
 	curl \
-        ffmpeg
+        ffmpeg && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata && rm -rf /var/lib/apt/lists/*
+
     # python-rosdep \
     # python-rosinstall \
     # python-vcstools \
