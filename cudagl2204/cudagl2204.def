@@ -1,0 +1,8 @@
+Bootstrap: docker
+From: crizzard/lr-gym:2204-cudagl-basic 
+
+
+%runscript
+#!/bin/bash
+    export PS1="(singularity)\[\033[38;5;34m\]\u@\h\[$(tput sgr0)\]\[\033[38;5;76m\]:\[$(tput sgr0)\]\[\033[38;5;172m\]\w\[$(tput sgr0)\]\[\033[38;5;158m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
+    /bin/bash --norc
