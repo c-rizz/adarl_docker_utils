@@ -3,7 +3,7 @@ FROM cudagl:12.3.1-devel-ubuntu22.04
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y \
 	ca-certificates python3 python3-venv python-is-python3 \
-        git wget sudo vim iputils-ping ssh \
+        git wget sudo vim iputils-ping ssh rsync \
 	dirmngr gnupg2 \
 	build-essential \
 	byobu \
