@@ -1,5 +1,6 @@
 #!/bin/bash
 
+image_name="crizzard/lr-gym:2204-cudagl-basic"
 container_name="lr-gym-2204-cudagl-basic"
 docker container inspect $container_name > /dev/null 2>&1
 if [ $? -ne 0 ]; then #if the previous command failed
@@ -7,7 +8,7 @@ if [ $? -ne 0 ]; then #if the previous command failed
          --net=host \
          --mount type=bind,source="$HOME",target=/home/host \
          --name $container_name \
-         lr-gym:2204-cudagl-basic \
+         $image_name \
          bash
 fi
 

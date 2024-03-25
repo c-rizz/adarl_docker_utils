@@ -1,3 +1,5 @@
 #!/bin/bash
 
-singularity build build/lr_gym_basic.sif lr_gym_basic.def
+cd "$(dirname "$0")"
+mkdir ../build
+singularity build ../build/cudagl2204.sif cudagl2204.def

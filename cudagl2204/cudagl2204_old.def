@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: crizzard/lr-gym:2204-cudagl-basic 
+From: nvidia/cudagl:12.3.1-devel-ubuntu22.04 
 
 %post
     ln -fs /usr/share/zoneinfo/Europe/Rome /etc/localtime 
@@ -18,7 +18,6 @@ From: crizzard/lr-gym:2204-cudagl-basic
 %environment
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
-
 
 %runscript
 #!/bin/bash
