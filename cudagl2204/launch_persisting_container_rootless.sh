@@ -7,7 +7,7 @@ if [ $? -ne 0 ]; then #if the previous command failed
          --mount type=bind,source="$HOME",target=/home/host \
          --name $container_name \
          -p 9422:9422 \
-         lr-gym:2204-cudagl-basic \
+         crizzard/lr-gym:2204-cudagl-basic \
          bash
 fi
 
