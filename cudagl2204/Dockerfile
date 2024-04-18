@@ -35,4 +35,6 @@ RUN echo 'set -g default-shell /bin/bash' >>/root/.byobu/.tmux.conf
 RUN echo 'set -g default-command /bin/bash' >>/root/.byobu/.tmux.conf
 
 RUN echo 'export PS1="\[\033[38;5;34m\]\u@\h\[$(tput sgr0)\]\[\033[38;5;76m\]:\[$(tput sgr0)\]\[\033[38;5;172m\]\w\[$(tput sgr0)\]\[\033[38;5;158m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"' >> /root/.bashrc
-
+RUN echo 'HISTCONTROL=ignoredups:erasedups' >> /root/.bashrc
+RUN echo 'shopt -s histappend' >> /root/.bashrc
+RUN echo 'PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"' >> /root/.bashrc
