@@ -1,6 +1,7 @@
 
-Nvidia is not publishing ned images for cudagl, they say someday they will resume.
-In the meantime we have to build images ourselves.
+Nvidia is not publishing new images for cudagl, they say someday they will resume.
+So images for ubuntu 22.04 or new cuda versions are not available.
+So in the meantime we have to build images ourselves.
 This can be done by cloning their repo:
 
 ```
