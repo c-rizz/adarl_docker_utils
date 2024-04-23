@@ -1,4 +1,6 @@
-FROM crizzard/lr_gym:2004-cudagl-basic
+ARG BASE_IMAGE
+
+FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND noninteractive
 

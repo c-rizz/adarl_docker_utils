@@ -2,41 +2,21 @@
 
 # Docker
 
-You can build the docker image using the build_docker.sh script.
+A collection of docker images is provided:
+* *basic* images provide a base set of useful packages on top of cuda/cudagl/opengl base images
+* *ros1* images provide a basic ros installation on top of *basic* images
+* *ros1-xbot* images provide a xbot installation and simulation tools (gazebo) on top of the *ros1* images
 
-Once you have done that you can launch the container with launch.sh.
+All these images can be build uisng the build_docker scripts in the respective folders.
 
-If you need rendering you may want to pass through access your host X11 server, you can do so by using launch_x11_pass.sh.
+The launch_persisting.sh script in utils/ can be used to launch the images with appropriate settings.
+All images are launched while mounting the host's home folder in /host/home, making it easy to access 
+files in the host's filesystem.
 
-**The launch scripts will mount your entire home folder in /home/host/ and use user root.**
-You can at this point proceed to create a catkin workspace and clone lr_gym and dependencies in it.
+The launch_persisting script also provides options to allow the use of gui applications within the docker (--x11)
+and to correctly launch for a docker rootless installation (--rootless).
 
-For example:
-```
-cd /home/host
-mkdir catkin-ws
-cd catkin-ws
-mkdir src
-catkin build
-cd src
-git clone --branch noetic-sb3 https://gitlab.idiap.ch/learn-real/lr_gym.git
-git clone --branch crzz-dev https://gitlab.idiap.ch/learn-real/panda.git lr_panda
-git clone --branch crzz-dev https://gitlab.idiap.ch/learn-real/lr_panda_moveit_config.git lr_panda_moveit_config
-git clone --branch crzz-dev https://gitlab.idiap.ch/learn-real/realsense.git lr_realsense
-cd ..
-catkin build -DCMAKE_BUILD_TYPE=Release
-./src/lr_gym/lr_gym/build_virtualenv.sh sb3
-```
-
-At this point this should work:
-```
-cd /home/host/catkin-ws
-. virtualenv/lr_gym_sb3/bin/activate
-. devel/setup.bash
-rosrun lr_gym test_cartpole_env.py --xvfb --render
-```
-
-# Singularity
+# Singularity (This section may be out of date)
 
 ### Getting singularity
 To build the singularity image you will need singularity on your system.

@@ -1,17 +1,20 @@
-ARG UBUNTU_VERSION=22.04
-FROM cudagl:12.3.1-devel-ubuntu${UBUNTU_VERSION}
+ARG BASE_IMAGE
 ARG TIMEZONE=Etc/UTC
+
+FROM ${BASE_IMAGE}
 
 # Install some useful packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	ca-certificates python3 python3-venv python-is-python3 \
-        git wget sudo vim iputils-ping ssh rsync \
+    git wget sudo vim iputils-ping ssh rsync \
 	dirmngr gnupg2 \
 	build-essential \
 	byobu \
 	curl \
-        ffmpeg && rm -rf /var/lib/apt/lists/*
+	mesa-utils xauth \
+	ffmpeg \
+	&& rm -rf /var/lib/apt/lists/*
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive TZ=${TIMEZONE} apt-get -y install tzdata && rm -rf /var/lib/apt/lists/*
 
 

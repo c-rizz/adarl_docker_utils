@@ -16,31 +16,27 @@ if __name__=="__main__":
     if args["ubuntu_version"] not in ["20.04","22.04"]:
         raise NotImplementedError(f"Unsupported ubuntu version {args['ubuntu_version']}")
         
-    p = subprocess.run("timedatectl show | head -1 | sed 's/Timezone=//g'", capture_output=True, text=True, shell=True)
-    host_timezone = p.stdout.strip()
     ubuntu_version = args["ubuntu_version"]
     base_image_type = args["base_type"]
 
     if base_image_type == "cudagl":
-        base_image = f"nvidia/cudagl:12.3.1-devel-ubuntu{ubuntu_version}"
+        base_image = f"crizzard/lr-gym:{ubuntu_version.replace('.','')}-cudagl-basic"
     elif base_image_type == "cuda":
-        base_image = f"nvidia/cuda:12.3.1-devel-ubuntu{ubuntu_version}"
+        base_image = f"crizzard/lr-gym:{ubuntu_version.replace('.','')}-cuda-basic"
     elif base_image_type == "opengl":
-        base_image = f"nvidia/opengl:1.2-glvnd-devel-ubuntu{ubuntu_version}"
+        base_image = f"crizzard/lr-gym:{ubuntu_version.replace('.','')}-opengl-basic"
         
 
     print(f"Building with:\n"
           f" - Ubuntu version = {ubuntu_version}\n"
           f" - Base image type = {base_image_type}\n"
-          f" - Base image = {base_image}\n"
-          f" - Host timezone = {host_timezone}")
-    name = "crizzard/lr-gym"
-    out_image_name = f"{name}:{ubuntu_version.replace('.','')}-{base_image_type}-basic"
+          f" - Base image = {base_image}\n")
+    name = "crizzard/ros"
+    out_image_name = f"{name}:{ubuntu_version.replace('.','')}-{base_image_type}"
     print(f"Resulting image name: {out_image_name}")
     time.sleep(2)
-    command =  (f'docker build --progress=plain'
+    command =  (f' docker build --progress=plain'
                 f' --tag {out_image_name}'
-                f' --build-arg="TIMEZONE={host_timezone}"'
-                f' --build-arg="BASE_IMAGE={base_image}" ./basic')
+                f' --build-arg="BASE_IMAGE={base_image}" ./ros1')
     print(f"Running command: {command}")
     subprocess.run(command, shell = True)
