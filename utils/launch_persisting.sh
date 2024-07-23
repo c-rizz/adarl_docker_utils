@@ -43,6 +43,8 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
         create_args="$create_args --volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
         create_args="$create_args --env=DISPLAY=$DISPLAY"
     fi
+    # NVIDIA_DRIVER_CAPABILITIES=all allows gazebo to use the nvidia gpu for rendering
+    create_args="$create_args --env=NVIDIA_DRIVER_CAPABILITIES=all"
 
     create_args="$create_args --name $container_name $image_name bash" 
     echo "creating container with args: $create_args"
