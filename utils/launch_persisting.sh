@@ -42,14 +42,19 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
         echo "Got xauth entry: $xauth_entry"
         create_args="$create_args --volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
         create_args="$create_args --env=DISPLAY=$DISPLAY"
+        # To let x11 use shared memory (breaks isolation)
+        create_args="$create_args --ipc=host"
     fi
     # NVIDIA_DRIVER_CAPABILITIES=all allows gazebo to use the nvidia gpu for rendering
     create_args="$create_args --env=NVIDIA_DRIVER_CAPABILITIES=all"
 
     create_args="$create_args --name $container_name $image_name bash" 
-    echo "creating container with args: $create_args"
+    echo ""
+    echo "creating container with args:"
+    echo " $create_args"
     docker create $create_args
 fi
 
+xhost +local: 
 # Start an already-created container
 docker start -i $container_name
