@@ -1,4 +1,4 @@
-# Docker Images and Utils for lr_gym
+# Docker Images and Utils for Robot Learning
 
 # Docker
 
