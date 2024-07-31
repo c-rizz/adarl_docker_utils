@@ -45,6 +45,8 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
         create_args="$create_args --env=DISPLAY=$DISPLAY"
         # To let x11 use shared memory (breaks isolation)
         create_args="$create_args --ipc=host"
+        # make all programs use nvidia for glx
+        create_args="$create_args --env=__NV_PRIME_RENDER_OFFLOAD=1 --env=__GLX_VENDOR_LIBRARY_NAME=nvidia"
     fi
     # NVIDIA_DRIVER_CAPABILITIES=all allows gazebo to use the nvidia gpu for rendering
     create_args="$create_args --env=NVIDIA_DRIVER_CAPABILITIES=all"
