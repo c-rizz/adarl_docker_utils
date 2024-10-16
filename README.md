@@ -13,8 +13,19 @@ The launch_persisting.sh script in utils/ can be used to launch the images with 
 All images are launched while mounting the host's home folder in /host/home, making it easy to access 
 files in the host's filesystem.
 
+Reusing multiple times launch_persisting with the same container_name will reuse the same container, so any changes will
+be kept.
+
 The launch_persisting script also provides options to allow the use of gui applications within the docker (--x11)
 and to correctly launch for a docker rootless installation (--rootless).
+
+So, for example you can launch a reusable rootless docker container with ros1-xbot, gpu (compute and rendering) support you can run:
+```
+./ros1-xbot/launch_persisting_container_rootless.sh
+```
+
+
+
 
 # Singularity (This section may be out of date)
 
