@@ -19,10 +19,11 @@ fi
 image_name=$1
 container_name=$2
 
+rootless=$("$*" == *"--rootless"* )
+echo "rootless = $rootless"
 
 docker container inspect $container_name > /dev/null 2>&1
 if [ $? -ne 0 ]; then #if the previous command failed, which means the container doe not exist yet
-
     create_args="--gpus all -it --mount type=bind,source=$HOME,target=/home/host "
     # if --rootless is among the arguments
     if [[ "$*" == *"--rootless"* ]] ; then
@@ -51,13 +52,9 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
     create_args="$create_args --env=NVIDIA_DRIVER_CAPABILITIES=all"
 
     create_args="$create_args --name $container_name $image_name bash" 
-    echo ""
-    echo "creating container with args:"
-    echo " $create_args"
+    echo "creating container with args: $create_args"
     docker create $create_args
 fi
-
-echo "Current session type: $XDG_SESSION_TYPE"
 
 xhost +local: 
 # Start an already-created container
