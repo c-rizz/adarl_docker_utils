@@ -6,7 +6,7 @@ FROM ${BASE_IMAGE}
 # Install some useful packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	ca-certificates python3 python3-venv python-is-python3 \
+	ca-certificates python3 python3-venv python-is-python3 python3-dev \
         git wget sudo vim iputils-ping ssh rsync \
 	dirmngr gnupg2 \
 	build-essential \
