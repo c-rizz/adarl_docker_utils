@@ -46,6 +46,11 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
         create_args="$create_args --ipc=host"
         # make all programs use nvidia for glx
         create_args="$create_args --env=__NV_PRIME_RENDER_OFFLOAD=1 --env=__GLX_VENDOR_LIBRARY_NAME=nvidia"
+        if [[ "$XDG_SESSION_TYPE" == *"wayland"* ]] ; then  
+            create_args="$create_args --env=XDG_RUNTIME_DIR=/tmp"
+            create_args="$create_args --env=WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
+            create_args="$create_args -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY"
+        fi        
     fi
     # NVIDIA_DRIVER_CAPABILITIES=all allows gazebo to use the nvidia gpu for rendering
     create_args="$create_args --env=NVIDIA_DRIVER_CAPABILITIES=all --shm-size=512m"

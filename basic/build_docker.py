@@ -11,9 +11,9 @@ if __name__=="__main__":
     ap.set_defaults(feature=True)
     args = vars(ap.parse_args())
     print(args)
-    if args["base_type"] not in ["cudagl","cuda","opengl"]:
+    if args["base_type"] not in ["cudagl","cuda","opengl","ubuntu"]:
         raise NotImplementedError(f"Unsupported base type {args['base_type']}")
-    if args["ubuntu_version"] not in ["20.04","22.04"]:
+    if args["ubuntu_version"] not in ["20.04","22.04","24.04"]:
         raise NotImplementedError(f"Unsupported ubuntu version {args['ubuntu_version']}")
         
     p = subprocess.run("timedatectl show | head -1 | sed 's/Timezone=//g'", capture_output=True, text=True, shell=True)
@@ -27,6 +27,8 @@ if __name__=="__main__":
         base_image = f"nvidia/cuda:12.3.1-devel-ubuntu{ubuntu_version}"
     elif base_image_type == "opengl":
         base_image = f"nvidia/opengl:1.2-glvnd-devel-ubuntu{ubuntu_version}"
+    elif base_image_type == "ubuntu":
+        base_image = "library/ubuntu:24.04"
         
 
     print(f"Building with:\n"
