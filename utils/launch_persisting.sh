@@ -19,15 +19,27 @@ fi
 image_name=$1
 container_name=$2
 
+if [[ "$*" == *"--rootless"* ]] ; then
+    rootless=true
+elif [[ "$*" == *"--no-rootless"* ]] ; then
+    rootless=false
+else
+    if [ $(docker context show) = "rootless" ] ; then
+        rootless=true
+    else
+        rootless=false
+    fi
+fi
 
 docker container inspect $container_name > /dev/null 2>&1
 if [ $? -ne 0 ]; then #if the previous command failed, which means the container doe not exist yet
 
     create_args="--gpus all -it --mount type=bind,source=$HOME,target=/home/host "
     # if --rootless is among the arguments
-    if [[ "$*" == *"--rootless"* ]] ; then
-        echo "Creating container for rootless mode"
-        create_args="$create_args --publish 9422:9422"
+    
+    if [ "$rootless" = true ] ; then
+        echo "Creating container for rootless mode, will reserve port 9422"
+        create_args="$create_args --publish 9422:9422" 
     else
         echo "Creating container for non-rootless mode"
         create_args="$create_args --net=host"
@@ -66,4 +78,8 @@ echo "Current session type: $XDG_SESSION_TYPE"
 
 xhost +local: 
 # Start an already-created container
-docker start -i $container_name
+if [[ "$*" == *"--no-start"* ]] ; then
+    echo "$container_name"
+else
+    docker start -i $container_name
+fi

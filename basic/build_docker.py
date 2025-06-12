@@ -7,7 +7,7 @@ import time
 if __name__=="__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--ubuntu-version", default="22.04", type=str, help="Ubuntu version to use")
-    ap.add_argument("--base-type", default="cudagl", type=str, help="Base image to use (cudagl, cuda, opengl)")
+    ap.add_argument("--base-type", default="opengl", type=str, help="Base image to use (cudagl, cuda, opengl)")
     ap.set_defaults(feature=True)
     args = vars(ap.parse_args())
     print(args)
@@ -36,7 +36,7 @@ if __name__=="__main__":
           f" - Base image type = {base_image_type}\n"
           f" - Base image = {base_image}\n"
           f" - Host timezone = {host_timezone}")
-    name = "crizzard/lr-gym"
+    name = "crizzard/adarl"
     out_image_name = f"{name}:{ubuntu_version.replace('.','')}-{base_image_type}-basic"
     print(f"Resulting image name: {out_image_name}")
     time.sleep(2)
