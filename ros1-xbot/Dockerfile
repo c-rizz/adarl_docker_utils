@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     ros-$ROS_DISTRO-eigen-conversions ros-$ROS_DISTRO-robot-state-publisher ros-$ROS_DISTRO-moveit-core \
     ros-$ROS_DISTRO-rviz ros-$ROS_DISTRO-interactive-markers ros-$ROS_DISTRO-tf-conversions ros-$ROS_DISTRO-tf2-eigen \
     qttools5-dev libqt5charts5-dev qtdeclarative5-dev \
+    libglfw3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # -------------------- XBot --------------------

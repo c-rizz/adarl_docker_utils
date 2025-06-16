@@ -20,19 +20,19 @@ if __name__=="__main__":
     base_image_type = args["base_type"]
 
     if base_image_type == "cudagl":
-        base_image = f"crizzard/ros:{ubuntu_version.replace('.','')}-cudagl"
+        base_image = f"crizzard/adarl:ros1-{ubuntu_version.replace('.','')}-cudagl"
     elif base_image_type == "cuda":
-        base_image = f"crizzard/ros:{ubuntu_version.replace('.','')}-cuda"
+        base_image = f"crizzard/adarl:ros1-{ubuntu_version.replace('.','')}-cuda"
     elif base_image_type == "opengl":
-        base_image = f"crizzard/ros:{ubuntu_version.replace('.','')}-opengl"
+        base_image = f"crizzard/adarl:ros1-{ubuntu_version.replace('.','')}-opengl"
         
 
     print(f"Building with:\n"
           f" - Ubuntu version = {ubuntu_version}\n"
           f" - Base image type = {base_image_type}\n"
           f" - Base image = {base_image}\n")
-    name = "crizzard/ros-xbot"
-    out_image_name = f"{name}:{ubuntu_version.replace('.','')}-{base_image_type}"
+    name = "crizzard/adarl"
+    out_image_name = f"{name}:ros1-xbot-{ubuntu_version.replace('.','')}-{base_image_type}"
     print(f"Resulting image name: {out_image_name}")
     time.sleep(2)
     command =  (f'docker build --progress=plain'
