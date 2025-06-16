@@ -38,8 +38,8 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
     # if --rootless is among the arguments
     
     if [ "$rootless" = true ] ; then
-        echo "Creating container for rootless mode, will reserve port 9422"
-        create_args="$create_args --publish 9422:9422" 
+        echo "Creating container for rootless mode, will reserve port"
+        create_args="$create_args --publish 9422" 
     else
         echo "Creating container for non-rootless mode"
         create_args="$create_args --net=host"
@@ -75,6 +75,7 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
 fi
 
 echo "Current session type: $XDG_SESSION_TYPE"
+echo "Exposing port 9422 as $(docker port $container_name 9422/tcp| awk -F: '{print $2}')"
 
 xhost +local: 
 # Start an already-created container
