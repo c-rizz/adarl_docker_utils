@@ -34,7 +34,7 @@ fi
 docker container inspect $container_name > /dev/null 2>&1
 if [ $? -ne 0 ]; then #if the previous command failed, which means the container doe not exist yet
 
-    create_args="--gpus all -it --mount type=bind,source=$HOME,target=/home/host "
+    create_args="--gpus all -it --mount type=bind,source=$HOME,target=/home/host --hostname ${container_name} "
     # if --rootless is among the arguments
     
     if [ "$rootless" = true ] ; then
