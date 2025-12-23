@@ -31,6 +31,11 @@ else
     fi
 fi
 
+if [[ "$XDG_SESSION_TYPE" == *"tty"* ]] ; then  
+# assume wayland
+    XDG_SESSION_TYPE="wayland"
+fi 
+
 docker container inspect $container_name > /dev/null 2>&1
 if [ $? -ne 0 ]; then #if the previous command failed, which means the container doe not exist yet
 
@@ -39,7 +44,7 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
     
     if [ "$rootless" = true ] ; then
         echo "Creating container for rootless mode, will reserve port"
-        create_args="$create_args --publish 9422" 
+        create_args="$create_args --publish 9422 --publish 49100 --publish 47998" 
     else
         echo "Creating container for non-rootless mode"
         create_args="$create_args --net=host"
