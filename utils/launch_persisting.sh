@@ -71,7 +71,7 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
     fi
     # NVIDIA_DRIVER_CAPABILITIES=all allows gazebo to use the nvidia gpu for rendering
     create_args="$create_args --env=NVIDIA_DRIVER_CAPABILITIES=all --shm-size=512m --entrypoint /bin/bash "
-
+    create_args="$create_args --env=HOSTHOSTNAME=$HOSTNAME "
     create_args="$create_args --name $container_name $image_name" 
     echo ""
     echo "creating container with args:"
