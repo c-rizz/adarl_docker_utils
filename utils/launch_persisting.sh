@@ -72,7 +72,11 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
     # NVIDIA_DRIVER_CAPABILITIES=all allows gazebo to use the nvidia gpu for rendering
     create_args="$create_args --env=NVIDIA_DRIVER_CAPABILITIES=all --shm-size=512m --entrypoint /bin/bash "
     create_args="$create_args --env=HOSTHOSTNAME=$HOSTNAME "
+    create_args="$create_args --group-add $(getent group render | cut -d: -f3)" # add the user's primary group to the container
+    create_args="$create_args --group-add $(getent group video | cut -d: -f3)"  # add the video group to the container to allow gpu access
+    create_args="$create_args --device /dev/dri:/dev/dri"               # give access to dri devices for gpu acceleration
     create_args="$create_args --name $container_name $image_name" 
+    # To allow usage of secondary GPUs for rendering
     echo ""
     echo "creating container with args:"
     echo " $create_args"

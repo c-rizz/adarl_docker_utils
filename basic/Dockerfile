@@ -4,7 +4,7 @@ ARG TIMEZONE=Etc/UTC
 FROM ${BASE_IMAGE}
 
 # Install some useful packages
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	ca-certificates python3 python3-venv python-is-python3 python3-dev \
     git wget sudo vim iputils-ping ssh rsync \
@@ -24,10 +24,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive TZ=${TIMEZONE} apt-get -y i
 # ----------------------------------------------------------------------
 
 # setup environment
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 USER root
-ENV PATH $PATH:/root/.local/bin
+ENV PATH=$PATH:/root/.local/bin
 
 #Byobu Fix for launching BASH instead of SH
 RUN mkdir -p /root/.byobu/
@@ -40,3 +40,12 @@ RUN echo 'export PS1="\[\033[38;5;34m\]\u@\h\[$(tput sgr0)\]\[\033[38;5;76m\]:\[
 RUN echo 'HISTCONTROL=ignoredups:erasedups' >> /root/.bashrc
 RUN echo 'shopt -s histappend' >> /root/.bashrc
 RUN echo 'PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'} history -a; history -c; history -r"' >> /root/.bashrc
+
+# Install UV
+
+# Download the latest installer
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+# Run the installer then remove it
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+# Ensure the installed binary is on the `PATH`
+ENV PATH="/root/.local/bin/:$PATH"
