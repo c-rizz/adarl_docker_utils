@@ -15,9 +15,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	mesa-utils xauth \
 	ffmpeg \
     bash-completion \
+	libegl1 libgles2 libegl-mesa0 libgl1-mesa-dri \
+	intel-media-va-driver libva-drm2 \
 	&& rm -rf /var/lib/apt/lists/*
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive TZ=${TIMEZONE} apt-get -y install tzdata && rm -rf /var/lib/apt/lists/*
 
+# Tell the NVIDIA Container Toolkit to mount all driver libs (EGL, GLX, compute, etc.)
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
+
+# Add the NVIDIA EGL vendor ICD so the EGL loader (libEGL.so) can find libEGL_nvidia.so.0.
+# The toolkit mounts the .so at runtime but doesn't always inject the JSON on Ubuntu 24.04.
+RUN mkdir -p /usr/share/glvnd/egl_vendor.d && \
+    printf '{"file_format_version":"1.0.0","ICD":{"library_path":"libEGL_nvidia.so.0"}}' \
+    > /usr/share/glvnd/egl_vendor.d/10_nvidia.json
 
 # ----------------------------------------------------------------------
 # System setup (up to my personal taste)
