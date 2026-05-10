@@ -21,18 +21,18 @@ if __name__=="__main__":
     ubuntu_version = args["ubuntu_version"]
     base_image_type = args["base_type"]
 
-    if base_image_type == "cudagl":
-        base_image = f"nvidia/cudagl:12.3.1-devel-ubuntu{ubuntu_version}"
-    elif base_image_type == "cuda":
-        base_image = f"nvidia/cuda:12.3.1-devel-ubuntu{ubuntu_version}"
-    elif base_image_type == "opengl":
-        base_image = f"nvidia/opengl:1.2-glvnd-devel-ubuntu{ubuntu_version}"
-    elif base_image_type == "ubuntu":
-        base_image = "library/ubuntu:24.04"
-    elif base_image_type == "ros-humble":
-        base_image = "ros:humble-ros-base"
-    elif base_image_type == "ros-jazzy":
-        base_image = "ros:jazzy-ros-base"
+    ubuntu_version2name = {"20.04": "focal", "22.04": "jammy", "24.04": "noble"}
+
+    types_to_base_image = { "cudagl" : f"nvidia/cudagl:12.3.1-devel-ubuntu{ubuntu_version}",
+                            "cuda": f"nvidia/cuda:12.3.1-devel-ubuntu{ubuntu_version}",
+                            "opengl": f"nvidia/opengl:1.2-glvnd-devel-ubuntu{ubuntu_version}",
+                            "ubuntu": f"library/ubuntu:{ubuntu_version}",
+                            "ros-humble": f"ros:humble-ros-base-{ubuntu_version2name[ubuntu_version]}",
+                            "ros-jazzy": f"ros:jazzy-ros-base-{ubuntu_version2name[ubuntu_version]}"
+                            }
+    base_image = types_to_base_image.get(base_image_type, None)
+    if base_image is None:
+        raise NotImplementedError(f"Unsupported base type {base_image_type}. available types are {list(types_to_base_image.keys())}")
         
 
     print(f"Building with:\n"
