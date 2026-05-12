@@ -29,7 +29,7 @@ if [[ $ubuntu_release == "24.04" ]]; then
     apt install -y libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev \
                    ros-jazzy-srdfdom ros-jazzy-geometric-shapes ros-jazzy-gz-cmake-vendor \
                    libglfw3-dev ros-jazzy-xacro libprotobuf32t64 ros-jazzy-rmw-cyclonedds-cpp \
-                   ros-jazzy-gz-sim-vendor
+                   ros-jazzy-gz-sim-vendor libxcb-cursor0
 fi
 
 
