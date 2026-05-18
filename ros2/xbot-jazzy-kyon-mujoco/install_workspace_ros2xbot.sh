@@ -13,7 +13,7 @@ if [ "$?" == 2 ]; then # was it not running?
 else
     stop_sshagent_afterwards=false
 fi
-# grep -slR "PRIVATE" /home/host/./ssh | xargs -o ssh-add
+# grep -slR "PRIVATE" /home/host/.ssh | xargs -o ssh-add
 ssh-add -l
 
 set -Eeo pipefail
@@ -29,7 +29,7 @@ if [[ $ubuntu_release == "24.04" ]]; then
     apt install -y libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev \
                    ros-jazzy-srdfdom ros-jazzy-geometric-shapes ros-jazzy-gz-cmake-vendor \
                    libglfw3-dev ros-jazzy-xacro libprotobuf32t64 ros-jazzy-rmw-cyclonedds-cpp \
-                   ros-jazzy-gz-sim-vendor libxcb-cursor0
+                   ros-jazzy-gz-sim-vendor libxcb-cursor0 nlohmann-json3-dev
 fi
 
 
@@ -56,6 +56,7 @@ source /opt/ros/jazzy/setup.bash
 forest grow -j10 xbot2
 forest grow -j10 xbot2_mujoco
 forest grow -j10 iit-kyon-ros-pkg
+forest grow -j10 iit-centauro-ros-pkg
 
 
 cd src

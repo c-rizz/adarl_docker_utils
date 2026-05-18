@@ -22,3 +22,13 @@ RUN --mount=type=ssh \
         rm /tmp/install_workspace_ros2xbot.sh && \
         rm -rf /opt/forest/forest_ws/src /opt/forest/forest_ws/ros_src /opt/forest/forest_ws/build /opt/forest/forest_ws/recipes
 COPY setup_ros_xbot.sh /setup_ros_xbot.sh
+COPY install_xbot2gui.sh /install_xbot2gui.sh
+
+# Install UV
+
+# Download the latest installer
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+# Run the installer then remove it
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+# Ensure the installed binary is on the `PATH`
+ENV PATH="/root/.local/bin/:$PATH"
