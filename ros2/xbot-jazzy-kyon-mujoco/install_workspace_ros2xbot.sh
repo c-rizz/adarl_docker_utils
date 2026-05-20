@@ -26,10 +26,14 @@ if [[ $ubuntu_release == "22.04" ]]; then
 fi
 if [[ $ubuntu_release == "24.04" ]]; then
     echo "Installing 24.04 dependencies"
-    apt install -y libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev \
+    apt install -y libglfw3 libhdf5-hl-100t64 unzip libopengl0 libosmesa6 \
+                   libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-cursor0 \
+                   libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 \
+                   libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev \
                    ros-jazzy-srdfdom ros-jazzy-geometric-shapes ros-jazzy-gz-cmake-vendor \
                    libglfw3-dev ros-jazzy-xacro libprotobuf32t64 ros-jazzy-rmw-cyclonedds-cpp \
-                   ros-jazzy-gz-sim-vendor libxcb-cursor0 nlohmann-json3-dev
+                   ros-jazzy-gz-sim-vendor nlohmann-json3-dev \
+
 fi
 
 
@@ -60,7 +64,7 @@ forest grow -j10 iit-centauro-ros-pkg
 
 
 cd src
-git clone git@github.com:c-rizz/xbot2_zmq.git --branch crzz-dev
+git clone git@github.com:ADVRHumanoids/xbot2_zmq.git --branch crzz-dev
 cd ../
 ./src/xbot2_zmq/build_and_install_systemwide.sh --install-dir /opt/forest/forest_ws/install
 
@@ -76,5 +80,15 @@ pip install rospkg lxml
 # pip install catkin_pkg
 # pip install -e src/adarl -e src/adarl_envs -e src/rreal -e src/pykyon -e src/pycentauro -e src/adarl_ros/adarl_ros -e src/adarl_ros/adarl_ros_utils
 # pip install -r src/adarl/requirements_2004.txt
-# apt remove -y liboctomap-dev
 # apt install -y python3-lxml
+
+# Remove build-only packages (headers/cmake modules not needed at runtime)
+if [[ $ubuntu_release == "22.04" ]]; then
+    apt remove -y libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev libgeometric-shapes-dev
+fi
+if [[ $ubuntu_release == "24.04" ]]; then
+    apt remove -y libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev \
+                  libglfw3-dev nlohmann-json3-dev ros-jazzy-gz-cmake-vendor
+fi
+apt autoremove -y
+apt clean

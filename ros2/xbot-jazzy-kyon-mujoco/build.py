@@ -16,6 +16,8 @@ command =  (f'docker build --progress=plain'
             f' --tag {out_image_name}'
             f' --build-arg="BASE_IMAGE={base_image_name}" '
             f' --ssh=default'
-            f' ./ros2/xbot-jazzy-kyon-mujoco')
+            f' ./ros2/xbot-jazzy-kyon-mujoco'
+            # f' --no-cache'
+            )
 print(f"Running command: {command}")
 subprocess.run(command, shell = True)
