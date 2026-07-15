@@ -60,3 +60,7 @@ ADD https://astral.sh/uv/install.sh /uv-installer.sh
 RUN sh /uv-installer.sh && rm /uv-installer.sh
 # Ensure the installed binary is on the `PATH`
 ENV PATH="/root/.local/bin/:$PATH"
+
+# Install Vulkan
+ADD install_vulkan.sh /install_vulkan.sh
+RUN sh /install_vulkan.sh && rm /install_vulkan.sh
