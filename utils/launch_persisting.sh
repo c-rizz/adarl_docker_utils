@@ -49,9 +49,9 @@ fi
 
 
 if [[ "$*" == *"--nogpu"* ]] ; then
-    gpu=true
-else
     gpu=false
+else
+    gpu=true
 fi
 
 docker container inspect $container_name > /dev/null 2>&1
