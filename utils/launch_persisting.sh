@@ -47,10 +47,20 @@ if [[ "$XDG_SESSION_TYPE" == *"tty"* ]] ; then
     XDG_SESSION_TYPE="wayland"
 fi
 
+
+if [[ "$*" == *"--nogpu"* ]] ; then
+    gpu=true
+else
+    gpu=false
+fi
+
 docker container inspect $container_name > /dev/null 2>&1
 if [ $? -ne 0 ]; then #if the previous command failed, which means the container doe not exist yet
 
-    create_args="--gpus all -it --mount type=bind,source=$HOME,target=/home/host --hostname ${container_name} "
+    create_args="-it --mount type=bind,source=$HOME,target=/home/host --hostname ${container_name} "
+    if [ "$gpu" = true ] ; then    
+        create_args="--gpus all"
+    fi
     # if --rootless is among the arguments
 
     if [ "$rootless" = true ] ; then
