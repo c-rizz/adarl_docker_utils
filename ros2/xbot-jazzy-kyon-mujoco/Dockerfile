@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
                     libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev \
                     ros-jazzy-srdfdom ros-jazzy-geometric-shapes ros-jazzy-gz-cmake-vendor \
                     libglfw3-dev ros-jazzy-xacro libprotobuf32t64 ros-jazzy-rmw-cyclonedds-cpp  \
+                    ros-jazzy-gz-sim-vendor ros-jazzy-ros-gz ros-jazzy-ros-gz-bridge \
     && rm -rf /var/lib/apt/lists/*
 
 COPY install_workspace_ros2xbot.sh /tmp/install_workspace_ros2xbot.sh

@@ -42,6 +42,22 @@ else
     fi
 fi
 
+# Docker engines from this version on support host networking in rootless mode
+rootless_host_net_min_version="29.5"
+docker_server_version=$(docker version --format '{{.Server.Version}}' 2>/dev/null)
+if [ -n "$docker_server_version" ] && \
+   [ "$(printf '%s\n%s\n' "$rootless_host_net_min_version" "$docker_server_version" | sort -V | head -n 1)" = "$rootless_host_net_min_version" ] ; then
+    rootless_host_net=true
+else
+    rootless_host_net=false
+fi
+
+if [ "$rootless" = false ] || [ "$rootless_host_net" = true ] ; then
+    host_net=true
+else
+    host_net=false
+fi
+
 if [[ "$XDG_SESSION_TYPE" == *"tty"* ]] ; then
 # assume wayland
     XDG_SESSION_TYPE="wayland"
@@ -63,14 +79,18 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
     fi
     # if --rootless is among the arguments
 
-    if [ "$rootless" = true ] ; then
+    if [ "$host_net" = true ] ; then
+        if [ "$rootless" = true ] ; then
+            echo "Creating container for rootless mode with host networking (docker $docker_server_version)"
+        else
+            echo "Creating container for non-rootless mode"
+        fi
+        create_args="$create_args --net=host"
+    else
         echo "Creating container for rootless mode, will reserve ports: $ports"
         for p in $ports ; do
             create_args="$create_args --publish $p"
         done
-    else
-        echo "Creating container for non-rootless mode"
-        create_args="$create_args --net=host"
     fi
 
     # if --x11 is among the arguments
@@ -104,12 +124,16 @@ if [ $? -ne 0 ]; then #if the previous command failed, which means the container
     echo "creating container with args:"
     echo " $create_args"
     docker create $create_args
+else
+    echo "Found existing container named $container_name, reusing it"
 fi
 
 echo "Current session type: $XDG_SESSION_TYPE"
-for p in $ports ; do
-    echo "Exposing port $p as $(docker port $container_name $p/tcp | awk -F: '{print $2}')"
-done
+if [ "$host_net" = false ] ; then
+    for p in $ports ; do
+        echo "Exposing port $p as $(docker port $container_name $p/tcp | awk -F: '{print $2}')"
+    done
+fi
 
 xhost +local:
 # Start an already-created container
