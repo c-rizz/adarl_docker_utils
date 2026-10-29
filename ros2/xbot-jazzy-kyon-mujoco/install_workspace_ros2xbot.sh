@@ -33,7 +33,6 @@ if [[ $ubuntu_release == "24.04" ]]; then
                    ros-jazzy-srdfdom ros-jazzy-geometric-shapes ros-jazzy-gz-cmake-vendor \
                    libglfw3-dev ros-jazzy-xacro libprotobuf32t64 ros-jazzy-rmw-cyclonedds-cpp \
                    ros-jazzy-gz-sim-vendor nlohmann-json3-dev ros-jazzy-control-msgs
-
 fi
 
 
@@ -46,7 +45,7 @@ pip install hhcm-forest
 pip install empy==3.3.4 colcon-common-extensions==0.3.0 lark==1.3.0 numpy
 forest init
 . setup.bash
-forest add-recipes git@github.com:ADVRHumanoids/multidof_recipes.git --tag ros2
+forest add-recipes git@github.com:ADVRHumanoids/multidof_recipes.git --tag crzz-dev
 
 # mkdir ros_src
 # cd ros_src
@@ -87,9 +86,10 @@ pip install rospkg lxml
 if [[ $ubuntu_release == "22.04" ]]; then
     apt remove -y libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev libgeometric-shapes-dev
 fi
-if [[ $ubuntu_release == "24.04" ]]; then
-    apt remove -y libboost-all-dev libhdf5-dev libqhull-dev libassimp-dev liboctomap-dev \
-                  libglfw3-dev nlohmann-json3-dev ros-jazzy-gz-cmake-vendor
-fi
+# if [[ $ubuntu_release == "24.04" ]]; then
+#     apt remove -y libboost-all-dev libhdf5-dev libqhull-dev liboctomap-dev \
+#                 nlohmann-json3-dev # ros-jazzy-gz-cmake-vendor
+# fi
 apt autoremove -y
 apt clean
+rm -rf /var/lib/apt/lists/*

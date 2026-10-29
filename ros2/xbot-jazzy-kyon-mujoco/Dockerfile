@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
                     ros-jazzy-srdfdom ros-jazzy-geometric-shapes ros-jazzy-gz-cmake-vendor \
                     libglfw3-dev ros-jazzy-xacro libprotobuf32t64 ros-jazzy-rmw-cyclonedds-cpp  \
                     ros-jazzy-gz-sim-vendor ros-jazzy-ros-gz ros-jazzy-ros-gz-bridge \
+                    ros-jazzy-ros-gz-sim ros-jazzy-ros-gz-bridge \
     && rm -rf /var/lib/apt/lists/*
 
 COPY install_workspace_ros2xbot.sh /tmp/install_workspace_ros2xbot.sh
@@ -20,8 +21,9 @@ RUN --mount=type=ssh \
         mkdir -p /opt/forest && \
         cd /opt/forest && \
         /tmp/install_workspace_ros2xbot.sh && \
-        rm /tmp/install_workspace_ros2xbot.sh && \
-        rm -rf /opt/forest/forest_ws/src /opt/forest/forest_ws/ros_src /opt/forest/forest_ws/build /opt/forest/forest_ws/recipes
+        rm /tmp/install_workspace_ros2xbot.sh
+        #rm -rf /opt/forest/forest_ws/src /opt/forest/forest_ws/ros_src /opt/forest/forest_ws/build /opt/forest/forest_ws/recipes
+
 COPY setup_ros_xbot.sh /setup_ros_xbot.sh
 COPY install_xbot2gui.sh /install_xbot2gui.sh
 
