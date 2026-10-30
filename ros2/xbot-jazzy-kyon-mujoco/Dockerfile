@@ -21,8 +21,8 @@ RUN --mount=type=ssh \
         mkdir -p /opt/forest && \
         cd /opt/forest && \
         /tmp/install_workspace_ros2xbot.sh && \
-        rm /tmp/install_workspace_ros2xbot.sh
-        #rm -rf /opt/forest/forest_ws/src /opt/forest/forest_ws/ros_src /opt/forest/forest_ws/build /opt/forest/forest_ws/recipes
+        rm /tmp/install_workspace_ros2xbot.sh \
+        rm -rf /opt/forest/forest_ws/src /opt/forest/forest_ws/ros_src /opt/forest/forest_ws/build /opt/forest/forest_ws/recipes
 
 COPY setup_ros_xbot.sh /setup_ros_xbot.sh
 COPY install_xbot2gui.sh /install_xbot2gui.sh
